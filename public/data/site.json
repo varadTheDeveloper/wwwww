@@ -6,7 +6,7 @@
   },
   "announcement": {
     "enabled": true,
-    "text": "Each piece is handcrafted to order and delivered across India"
+    "text": "Diwali orders now open. Each piece is handcrafted to order and delivered across India"
   },
   "hero": {
     "title": "Where divinity meets décor",
@@ -35,17 +35,44 @@
     ]
   },
   "craft": [
-    { "title": "Pearl beadwork", "text": "Hundreds of pearls outline every lotus and trace the scalloped edge." },
-    { "title": "Mirror work", "text": "Small hand-cut mirrors catch the diya light around Shri Krishna." },
-    { "title": "Zari and silk thread", "text": "Gold zari and silk thread bring the peacock feathers and lotus petals to life." },
-    { "title": "Sequin ground", "text": "An ivory field of sequins that shimmers softly from across the room." }
+    {
+      "title": "Pearl beadwork",
+      "text": "Hundreds of pearls outline every lotus and trace the scalloped edge."
+    },
+    {
+      "title": "Mirror work",
+      "text": "Small hand-cut mirrors catch the diya light around Shri Krishna."
+    },
+    {
+      "title": "Zari and silk thread",
+      "text": "Gold zari and silk thread bring the peacock feathers and lotus petals to life."
+    },
+    {
+      "title": "Sequin ground",
+      "text": "An ivory field of sequins that shimmers softly from across the room."
+    }
   ],
   "faq": [
-    { "q": "How do I place an order?", "a": "Tap “Order on WhatsApp” on any piece. Your message opens with the product already filled in. We confirm the details, share payment options and begin making your piece." },
-    { "q": "How long does delivery take?", "a": "Each piece is made to order and dispatched in 5–7 days. Delivery across India usually takes another 3–6 days, depending on your city." },
-    { "q": "Can I customise a toran?", "a": "Yes. We can adjust the size and colours for your doorway. Message us on WhatsApp with your door width and the look you want." },
-    { "q": "How do I pay?", "a": "We accept UPI and bank transfer. Payment details are shared on WhatsApp once your order is confirmed." },
-    { "q": "How do I care for my toran?", "a": "Dust it gently with a soft, dry brush. Do not wash it or iron over the beadwork. Store it flat, wrapped in a cotton cloth." }
+    {
+      "q": "How do I place an order?",
+      "a": "Tap “Order on WhatsApp” on any piece. Your message opens with the product already filled in. We confirm the details, share payment options and begin making your piece."
+    },
+    {
+      "q": "How long does delivery take?",
+      "a": "Each piece is made to order and dispatched in 5–7 days. Delivery across India usually takes another 3–6 days, depending on your city."
+    },
+    {
+      "q": "Can I customise a toran?",
+      "a": "Yes. We can adjust the size and colours for your doorway. Message us on WhatsApp with your door width and the look you want."
+    },
+    {
+      "q": "How do I pay?",
+      "a": "We accept UPI and bank transfer. Payment details are shared on WhatsApp once your order is confirmed."
+    },
+    {
+      "q": "How do I care for my toran?",
+      "a": "Dust it gently with a soft, dry brush. Do not wash it or iron over the beadwork. Store it flat, wrapped in a cotton cloth."
+    }
   ],
   "policies": {
     "shipping": {
