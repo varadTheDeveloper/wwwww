@@ -1,0 +1,35 @@
+{
+  "categories": [
+    { "id": "torans", "name": "Torans" }
+  ],
+  "products": [
+    {
+      "id": "shyam-kamal-toran",
+      "slug": "shyam-kamal-toran",
+      "name": "Shyam Kamal Toran",
+      "category": "torans",
+      "price": 3499,
+      "mrp": 0,
+      "short": "A hand-embroidered toran with Shri Krishna at its heart, pink lotuses on either side and pearl tassels that sway at your door.",
+      "description": "Shri Krishna sits at the centre, crowned with peacock feathers and framed in mirror work. Pink lotuses and peacock motifs open out on both sides, set on a ground of ivory sequins and pearl beadwork. Pearl tassels hang from the scalloped edge.\n\nEvery bead, sequin and mirror is placed by hand, so no two pieces are exactly alike. Hang it above your main door for Diwali, a griha pravesh or a wedding, or keep it over your mandir all year.",
+      "details": [
+        { "label": "Size", "value": "Approx. 36 × 8 inches" },
+        { "label": "Work", "value": "Pearl beadwork, sequins, mirror work, zari and silk-thread embroidery" },
+        { "label": "Hanging", "value": "Loops at both ends for hooks or nails" },
+        { "label": "Made to order", "value": "Dispatched in 5–7 days" },
+        { "label": "Care", "value": "Dust gently with a soft brush. Do not wash." }
+      ],
+      "images": [
+        "/images/products/signature-toran-detail.webp",
+        "/images/products/signature-toran-doorway.webp",
+        "/images/products/signature-toran-flatlay.webp",
+        "/images/products/signature-toran-krishna.webp",
+        "/images/products/signature-toran-angle.webp"
+      ],
+      "inStock": true,
+      "featured": true,
+      "customisable": true,
+      "createdAt": "2026-11-06"
+    }
+  ]
+}

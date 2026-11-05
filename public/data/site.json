@@ -1,0 +1,68 @@
+{
+  "brand": {
+    "name": "House of Nikunj",
+    "tagline": "Where divinity meets décor",
+    "line": "Handcrafted home décor"
+  },
+  "announcement": {
+    "enabled": true,
+    "text": "Each piece is handcrafted to order and delivered across India"
+  },
+  "hero": {
+    "title": "Where divinity meets décor",
+    "text": "Hand-embroidered torans, beaded and stitched by hand, to welcome every celebration home.",
+    "video": "/video/house-of-nikunj-film.mp4",
+    "poster": "/video/poster.jpg"
+  },
+  "contact": {
+    "whatsapp": "918698393398",
+    "phone": "+91 86983 93398",
+    "email": "",
+    "instagram": "",
+    "address": "",
+    "hours": "Monday to Saturday, 10 am to 7 pm"
+  },
+  "order": {
+    "greeting": "Namaste House of Nikunj!",
+    "closing": "Please share the payment and delivery details."
+  },
+  "about": {
+    "title": "A house built on handwork",
+    "paragraphs": [
+      "Nikunj is the grove where Shri Krishna played among lotuses and peacocks. We named our house after it because that is the feeling we want every doorway to carry: a little of the divine, made by hand.",
+      "Each toran begins as plain fabric. Our artisans trace the design, then fill it bead by bead with pearls, sequins, mirrors and zari. A single piece takes days of patient work, and no two come out exactly alike.",
+      "We make in small numbers and only to order, so every piece that reaches your home was made for it."
+    ]
+  },
+  "craft": [
+    { "title": "Pearl beadwork", "text": "Hundreds of pearls outline every lotus and trace the scalloped edge." },
+    { "title": "Mirror work", "text": "Small hand-cut mirrors catch the diya light around Shri Krishna." },
+    { "title": "Zari and silk thread", "text": "Gold zari and silk thread bring the peacock feathers and lotus petals to life." },
+    { "title": "Sequin ground", "text": "An ivory field of sequins that shimmers softly from across the room." }
+  ],
+  "faq": [
+    { "q": "How do I place an order?", "a": "Tap “Order on WhatsApp” on any piece. Your message opens with the product already filled in. We confirm the details, share payment options and begin making your piece." },
+    { "q": "How long does delivery take?", "a": "Each piece is made to order and dispatched in 5–7 days. Delivery across India usually takes another 3–6 days, depending on your city." },
+    { "q": "Can I customise a toran?", "a": "Yes. We can adjust the size and colours for your doorway. Message us on WhatsApp with your door width and the look you want." },
+    { "q": "How do I pay?", "a": "We accept UPI and bank transfer. Payment details are shared on WhatsApp once your order is confirmed." },
+    { "q": "How do I care for my toran?", "a": "Dust it gently with a soft, dry brush. Do not wash it or iron over the beadwork. Store it flat, wrapped in a cotton cloth." }
+  ],
+  "policies": {
+    "shipping": {
+      "title": "Shipping policy",
+      "body": "Every piece is handcrafted to order and dispatched within 5–7 working days of payment.\n\nWe ship across India through trusted courier partners. Delivery usually takes 3–6 working days after dispatch, depending on your location. We share the tracking details on WhatsApp as soon as your order ships.\n\nDuring festive seasons, making and delivery may take a few extra days. We will always tell you before you pay."
+    },
+    "returns": {
+      "title": "Returns and refunds",
+      "body": "Because each piece is handmade to order, we do not accept returns or exchanges for a change of mind.\n\nIf your order arrives damaged, message us on WhatsApp within 48 hours of delivery with an unboxing video and photos. We will repair or replace the piece at no cost.\n\nSmall differences in bead placement and shade are part of handwork and are not defects.\n\nCustomised pieces cannot be cancelled once making has begun."
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "body": "We only collect the details you share with us on WhatsApp to place your order: your name, phone number and delivery address.\n\nWe use these details only to make and deliver your order and to contact you about it. We never sell or share them, except with our courier partner for delivery.\n\nThis website does not use tracking cookies or store any personal information."
+    },
+    "terms": {
+      "title": "Terms of service",
+      "body": "Prices on this website are in Indian rupees and include all taxes unless stated otherwise.\n\nAn order is confirmed only after we confirm it on WhatsApp and receive full payment.\n\nProduct photos are of our own pieces. Because every piece is handmade, the one you receive may differ slightly in bead placement and shade.\n\nAll designs, photographs and content on this website belong to House of Nikunj and may not be copied without permission."
+    }
+  }
+}
