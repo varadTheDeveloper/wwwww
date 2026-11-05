@@ -124,7 +124,7 @@ export function HeroMedia({ gh, site, setSite, run, busy, imgSrc, rememberPrevie
   const [err, setErr] = useState('');
   const vRef = useRef(null);
   const pRef = useRef(null);
-  const MAX_MB = 40;
+  const MAX_MB = 24; // Cloudflare Pages serves files up to 25 MiB
 
   const pickVideo = (f) => {
     setErr('');
