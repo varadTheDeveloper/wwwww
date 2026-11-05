@@ -1,12 +1,8 @@
-// Talks to the GitHub REST API straight from the browser.
+// The admin talks to GitHub through the site's own /api/github endpoint
+// (a Cloudflare Pages Function). That function holds the secret GitHub key,
+// so the browser only ever sees a login session.
 // The repo is the database: JSON files hold the content, images live in public/images.
 // Every save becomes one commit; Cloudflare Pages rebuilds the site from it.
-
-export const DEFAULT_REPO = {
-  owner: 'varadTheDeveloper',
-  repo: 'wwwww',
-  branch: 'main',
-};
 
 export const PATHS = {
   products: 'public/data/products.json',
@@ -15,7 +11,7 @@ export const PATHS = {
   media: 'public/media',
 };
 
-const KEY = 'hon-admin-v1';
+const KEY = 'hon-admin-v2';
 
 export function loadSession() {
   try {
@@ -31,24 +27,41 @@ export function saveSession(s) {
 }
 
 export function clearSession() {
-  try { localStorage.removeItem(KEY); } catch { /* storage blocked */ }
+  try { localStorage.removeItem(KEY); localStorage.removeItem('hon-admin-v1'); } catch { /* storage blocked */ }
+}
+
+export async function login(id, password) {
+  let res;
+  try {
+    res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, password }),
+    });
+  } catch {
+    throw new Error('Could not reach the website. Check your internet connection and try again.');
+  }
+  const body = await res.json().catch(() => null);
+  if (!res.ok || !body) {
+    if (res.status === 404 || res.status === 405 || !body) {
+      throw new Error('Sign-in only works on the live Cloudflare site, not on a local preview.');
+    }
+    throw new Error(body.message || 'Sign-in failed. Try again.');
+  }
+  return body; // { session, repo, branch }
 }
 
 export class GitHub {
-  constructor({ token, owner, repo, branch }) {
-    this.token = token;
-    this.owner = owner;
-    this.repo = repo;
+  constructor({ session, branch }) {
+    this.session = session;
     this.branch = branch;
   }
 
   async api(path, opts = {}) {
-    const res = await fetch(`https://api.github.com/repos/${this.owner}/${this.repo}${path}`, {
+    const res = await fetch(`/api/github${path}`, {
       ...opts,
       headers: {
-        Accept: 'application/vnd.github+json',
-        Authorization: `Bearer ${this.token}`,
-        'X-GitHub-Api-Version': '2022-11-28',
+        Authorization: `Bearer ${this.session}`,
         ...(opts.body ? { 'Content-Type': 'application/json' } : {}),
       },
     });
@@ -65,7 +78,7 @@ export class GitHub {
   async checkAccess() {
     const r = await this.api('');
     if (!r.permissions?.push) {
-      throw new Error('This token can read the repository but cannot save changes. Give it "Contents: Read and write" access.');
+      throw new Error('The GitHub key in Cloudflare can read the website but cannot save changes. Give it "Contents: Read and write" access.');
     }
     return r;
   }

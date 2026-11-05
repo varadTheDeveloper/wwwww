@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { clearSession, DEFAULT_REPO, GitHub, loadSession, PATHS, saveSession } from './github.js';
+import { clearSession, GitHub, loadSession, login, PATHS, saveSession } from './github.js';
 import Products from './Products.jsx';
 import { HeroMedia, Policies, SiteDetails, StoryFaq } from './SiteForms.jsx';
 import './admin.css';
@@ -13,16 +13,16 @@ const TABS = [
 ];
 
 function friendly(e) {
-  if (e.status === 401) return 'Your access key is no longer valid. Sign out and sign in with a new key.';
-  if (e.status === 403) return 'This access key is not allowed to change the website. Check that Contents is set to "Read and write".';
-  if (e.status === 404) return 'The website repository was not found. Check the repository details on the sign-in page.';
+  if (e.status === 401) return 'Your session has ended. Sign out and sign in again.';
+  if (e.status === 403) return 'The GitHub key in Cloudflare is not allowed to change the website. Check that Contents is set to "Read and write".';
+  if (e.status === 404) return 'The website repository was not found. Check GITHUB_REPO in the Cloudflare settings.';
   if (e.message === 'Failed to fetch') return 'Could not reach GitHub. Check your internet connection and try again.';
   return e.message;
 }
 
 function Login({ onDone }) {
-  const [token, setToken] = useState('');
-  const [repo, setRepo] = useState(DEFAULT_REPO);
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -30,8 +30,9 @@ function Login({ onDone }) {
     e.preventDefault();
     setErr('');
     setBusy(true);
-    const s = { ...repo, token: token.trim() };
     try {
+      const r = await login(id.trim(), password);
+      const s = { session: r.session, repo: r.repo, branch: r.branch };
       await new GitHub(s).checkAccess();
       saveSession(s);
       onDone(s);
@@ -47,33 +48,17 @@ function Login({ onDone }) {
       <form className="a-login-card" onSubmit={submit}>
         <img src="/images/brand/peacock-mark.webp" alt="" width="110" />
         <h1>House of Nikunj admin</h1>
-        <p className="a-muted">Sign in with your GitHub access key to edit products and pages.</p>
+        <p className="a-muted">Sign in to edit products and pages.</p>
         <label className="f">
-          <span className="f-label">Access key</span>
-          <input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder="github_pat_…" autoComplete="off" required />
+          <span className="f-label">ID</span>
+          <input type="text" value={id} onChange={(e) => setId(e.target.value)} autoComplete="username" autoCapitalize="none" required />
+        </label>
+        <label className="f">
+          <span className="f-label">Password</span>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required />
         </label>
         {err && <p className="a-error" role="alert">{err}</p>}
-        <button className="a-btn a-btn-primary a-btn-block" disabled={busy || !token.trim()}>{busy ? 'Checking…' : 'Sign in'}</button>
-
-        <details className="a-help">
-          <summary>How to get an access key</summary>
-          <ol>
-            <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noreferrer">GitHub's new access key page</a> and sign in.</li>
-            <li>Name it “House of Nikunj admin” and choose an expiry date.</li>
-            <li>Under <b>Repository access</b>, choose <b>Only select repositories</b> and pick <b>{repo.owner}/{repo.repo}</b>.</li>
-            <li>Under <b>Permissions</b>, set <b>Contents</b> to <b>Read and write</b>.</li>
-            <li>Select <b>Generate token</b>, copy it and paste it above.</li>
-          </ol>
-          <p>The key is saved only in this browser. Sign in only on your own phone or computer, because anyone with the key can change the website.</p>
-        </details>
-        <details className="a-help">
-          <summary>Repository settings</summary>
-          <div className="form-grid">
-            <label className="f"><span className="f-label">Owner</span><input value={repo.owner} onChange={(e) => setRepo({ ...repo, owner: e.target.value.trim() })} /></label>
-            <label className="f"><span className="f-label">Repository</span><input value={repo.repo} onChange={(e) => setRepo({ ...repo, repo: e.target.value.trim() })} /></label>
-            <label className="f"><span className="f-label">Branch</span><input value={repo.branch} onChange={(e) => setRepo({ ...repo, branch: e.target.value.trim() })} /></label>
-          </div>
-        </details>
+        <button className="a-btn a-btn-primary a-btn-block" disabled={busy || !id.trim() || !password}>{busy ? 'Signing in…' : 'Sign in'}</button>
       </form>
     </div>
   );
@@ -126,7 +111,7 @@ function Dashboard({ session, onSignOut }) {
   const imgSrc = (src, fallback) => {
     if (!src) return '';
     if (previews.current.has(src)) return previews.current.get(src);
-    if (fallback && src.startsWith('/')) return `https://raw.githubusercontent.com/${session.owner}/${session.repo}/${session.branch}/public${src}`;
+    if (fallback && src.startsWith('/') && session.repo) return `https://raw.githubusercontent.com/${session.repo}/${session.branch}/public${src}`;
     return src;
   };
 

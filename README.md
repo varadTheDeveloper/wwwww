@@ -32,15 +32,22 @@ npm run dev
 
 No `404.html` is included on purpose: Cloudflare Pages then serves the app for every path, so links like `/product/shyam-kamal-toran` work.
 
-## Signing in to the admin
+## Admin login
 
-The admin uses a GitHub fine-grained access token that can only touch this one repo.
+Go to `/admin` and sign in with ID **abc** and password **123** (test login).
 
-1. Go to https://github.com/settings/personal-access-tokens/new
-2. Repository access → Only select repositories → this repo.
-3. Permissions → Contents → **Read and write**.
-4. Generate, copy, and paste it on `/admin`.
+The admin never sees a GitHub key. Sign-in and saving go through two small Cloudflare Pages Functions in `functions/api/`. They check the ID and password, then forward saves to GitHub using a key stored secretly in Cloudflare. The login only works on the Cloudflare site, not with `npm run dev`.
 
-The token is stored only in that browser. Anyone who opens `/admin` without a valid token can see the sign-in page but cannot change anything.
+### One-time setup in Cloudflare
 
-If the repo is renamed or moved, update `DEFAULT_REPO` in `src/admin/github.js` (or use "Repository settings" on the sign-in page).
+Cloudflare dashboard → your Pages project → Settings → Variables and Secrets → add:
+
+| Name | Value | Required |
+|---|---|---|
+| `GITHUB_TOKEN` | A GitHub fine-grained key for this repo with **Contents: Read and write** (create at https://github.com/settings/personal-access-tokens/new). Add it as a **Secret**. | Yes |
+| `ADMIN_ID` | Admin ID. Defaults to `abc`. | No |
+| `ADMIN_PASSWORD` | Admin password. Defaults to `123`. Set a strong one before going live. Changing it signs everyone out. | No |
+| `GITHUB_REPO` | Defaults to `varadTheDeveloper/wwwww`. | No |
+| `GITHUB_BRANCH` | Defaults to `main`. | No |
+
+Redeploy after adding variables so they take effect.
