@@ -99,7 +99,6 @@ export function Footer() {
       </div>
       <div className="footer-base">
         <span>© {new Date().getFullYear()} House of Nikunj</span>
-        <span>Website by <a href="https://thegrowthstep.com" target="_blank" rel="noreferrer">The Growth Step</a></span>
       </div>
     </footer>
   );
