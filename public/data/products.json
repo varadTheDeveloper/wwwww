@@ -46,7 +46,8 @@
       "inStock": true,
       "featured": true,
       "customisable": true,
-      "createdAt": "2026-11-06"
+      "createdAt": "2026-11-06",
+      "shareImage": "/images/products/shyam-kamal-toran-share.jpg"
     }
   ]
 }

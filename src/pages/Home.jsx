@@ -5,6 +5,7 @@ import { enquiryMessage, waLink } from '../lib/format.js';
 import ToranEdge from '../components/ToranEdge.jsx';
 import { SoundIcon, WhatsAppIcon } from '../components/Icons.jsx';
 import { Gallery, OrderButton, Price, ProductCard } from '../components/Product.jsx';
+import ShareButton from '../components/Share.jsx';
 
 function Hero({ site, first }) {
   const video = useRef(null);
@@ -58,6 +59,7 @@ function Signature({ site, product }) {
           </dl>
           <div className="signature-actions">
             <OrderButton site={site} product={product} />
+            <ShareButton product={product} />
             <Link className="text-link" to={`/product/${product.slug}`}>See full details</Link>
           </div>
           {product.customisable && <p className="note">Want a different size or colour? We customise every piece on request.</p>}

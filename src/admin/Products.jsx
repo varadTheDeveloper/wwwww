@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { PATHS, toJsonText } from './github.js';
-import { compressImage, shortId, slugify } from './media.js';
+import { compressImage, makeShareImage, shortId, slugify } from './media.js';
 import { Area, ConfirmButton, Field, RowList, Text, Toggle } from './ui.jsx';
 import { rupees } from '../lib/format.js';
 
@@ -197,7 +197,7 @@ export default function Products({ gh, catalog, setCatalog, run, busy, imgSrc, r
   const repoPathFor = (src) => (src.startsWith('/images/') ? 'public' + src : null);
 
   const unusedPaths = (srcs, nextProducts) => {
-    const still = new Set(nextProducts.flatMap((p) => p.images));
+    const still = new Set(nextProducts.flatMap((p) => [...p.images, p.shareImage].filter(Boolean)));
     return srcs.filter((s) => !still.has(s)).map(repoPathFor).filter(Boolean);
   };
 
@@ -212,11 +212,37 @@ export default function Products({ gh, catalog, setCatalog, run, busy, imgSrc, r
         rememberPreview(src, im.pending.preview);
         return src;
       });
+      const prev = catalog.products.find((x) => x.id === draft.id) || null;
+      const existed = !!prev;
+
+      // Link-preview image (WhatsApp, Facebook): remake it whenever the cover photo changes.
+      let shareImage = prev?.shareImage || '';
+      const cover = images[0];
+      const coverChanged = !prev || prev.images[0] !== cover;
+      if (cover && (coverChanged || !shareImage)) {
+        const pendingCover = draft.images[0]?.pending;
+        try {
+          let made;
+          try {
+            made = await makeShareImage(pendingCover ? pendingCover.preview : imgSrc(cover));
+          } catch (e) {
+            if (pendingCover) throw e;
+            made = await makeShareImage(imgSrc(cover, true));
+          }
+          const name = `${draft.slug}-share-${shortId()}.jpg`;
+          files.push({ path: `${PATHS.productImages}/${name}`, base64: made.base64 });
+          shareImage = `/images/products/${name}`;
+        } catch {
+          shareImage = ''; // previews fall back to the cover photo
+        }
+      }
+
       const product = { ...draft, images };
-      const existed = catalog.products.some((x) => x.id === product.id);
+      if (shareImage) product.shareImage = shareImage;
+      else delete product.shareImage;
       const products = existed ? catalog.products.map((x) => (x.id === product.id ? product : x)) : [...catalog.products, product];
       const next = { ...catalog, products };
-      const old = existed ? catalog.products.find((x) => x.id === product.id).images : [];
+      const old = existed ? [...prev.images, prev.shareImage].filter(Boolean) : [];
       const deletes = await gh.existing(unusedPaths(old, products));
       files.push({ path: PATHS.products, text: toJsonText(next) });
       await gh.commit(`${existed ? 'Update' : 'Add'} product: ${product.name}`, files, deletes);
@@ -229,7 +255,7 @@ export default function Products({ gh, catalog, setCatalog, run, busy, imgSrc, r
     run(async () => {
       const products = catalog.products.filter((x) => x.id !== product.id);
       const next = { ...catalog, products };
-      const deletes = await gh.existing(unusedPaths(product.images, products));
+      const deletes = await gh.existing(unusedPaths([...product.images, product.shareImage].filter(Boolean), products));
       await gh.commit(`Delete product: ${product.name}`, [{ path: PATHS.products, text: toJsonText(next) }], deletes);
       setCatalog(next);
       setEditing(null);

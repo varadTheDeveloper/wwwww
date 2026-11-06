@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useData, useTitle } from '../lib/data.jsx';
 import { enquiryMessage, paragraphs, waLink } from '../lib/format.js';
 import { Gallery, OrderButton, Price, ProductCard } from '../components/Product.jsx';
+import ShareButton from '../components/Share.jsx';
 import { InstagramIcon, WhatsAppIcon } from '../components/Icons.jsx';
 import { Closing } from './Home.jsx';
 
@@ -71,6 +72,7 @@ export function ProductPage() {
             )}
             <div className="signature-actions">
               <OrderButton site={site} product={product} qty={qty} />
+              <ShareButton product={product} />
             </div>
             <p className="note">
               {product.inStock ? 'Your WhatsApp message opens with this piece and quantity filled in.' : 'This piece is made on request. Message us and we will tell you when it can be ready.'}

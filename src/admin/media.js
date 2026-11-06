@@ -47,3 +47,28 @@ export function slugify(s) {
 export function shortId() {
   return Math.random().toString(36).slice(2, 7);
 }
+
+// Builds the 1200×630 JPEG used for WhatsApp / Facebook link previews from the cover photo.
+// The crop sits a little above centre, where a toran usually hangs in the photo.
+export async function makeShareImage(src) {
+  const img = await new Promise((resolve, reject) => {
+    const i = new Image();
+    i.crossOrigin = 'anonymous';
+    i.onload = () => resolve(i);
+    i.onerror = () => reject(new Error('Could not load the cover photo for the share preview.'));
+    i.src = src;
+  });
+  const W = 1200, H = 630;
+  const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+  const sw = W / scale, sh = H / scale;
+  const sx = (img.naturalWidth - sw) / 2;
+  const sy = Math.max(0, Math.min(img.naturalHeight - sh, img.naturalHeight * 0.38 - sh / 2));
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+  const blob = await new Promise((r) => canvas.toBlob(r, 'image/jpeg', 0.84));
+  if (!blob) throw new Error('Could not create the share preview.');
+  return { base64: await blobToBase64(blob) };
+}
